@@ -1,0 +1,24 @@
+name: deploy 1kb website
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "*"
+  workflow_dispatch:
+
+jobs:
+  new-deploy-account:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: copy files to server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          source: "index.html,LICENSE,README.md"
+          target: "/var/www/1kb.lingdocs.com"
